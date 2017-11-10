@@ -1,0 +1,48 @@
+---
+- name: Setup the server
+  hosts: app-server
+  become: yes
+  become_method: sudo
+  vars:
+    ssh_port: 22
+
+  pre_tasks:
+    - name: install fail2ban
+      apt: name=fail2ban update_cache=yes
+
+    - name: install ufw
+      apt: name=ufw update_cache=yes
+
+    - name: install curl
+      apt: name=curl update_cache=yes
+
+    - name: install htop
+      apt: name=htop update_cache=yes
+
+    - name: install wget
+      apt: name=wget update_cache=yes
+
+    - name: install git
+      apt: name=git update_cache=yes
+
+    - name: create a user for app
+      user: name=app shell=/bin/bash home=/home/app groups=www-data append=yes
+
+  roles:
+    - docker
+    - nginx
+    - nodejs
+    - blog-deploy
+
+  post_tasks:
+    - name: create directory
+      shell: mkdir -p /home/app/my_blogs/build
+      become_user: app
+
+    - name: add certbot repo
+      apt_repository:
+        repo: 'ppa:certbot/certbot'
+        update_cache: yes
+
+    - name: install nginx certbot
+      apt: name=python-certbot-nginx update_cache=yes

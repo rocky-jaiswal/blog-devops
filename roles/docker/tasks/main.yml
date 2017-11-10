@@ -1,0 +1,31 @@
+---
+
+- name: Install docker deps
+  apt: name=apt-transport-https,ca-certificates,software-properties-common update_cache=yes
+
+- name: Add key
+  shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+- name: Add repo
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+    state: present
+
+- name: Install Docker
+  apt: name=docker-ce update_cache=yes
+
+- name: Add users to docker group
+  group:
+    name: docker
+    state: present
+
+- user:
+    name: app
+    group: docker
+
+- user:
+    name: rockyj
+    group: docker
+
+- name: restart docker
+  systemd: name=docker state=restarted

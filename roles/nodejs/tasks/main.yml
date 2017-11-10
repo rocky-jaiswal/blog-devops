@@ -1,0 +1,22 @@
+---
+
+- name: Get node script
+  get_url:
+    url: https://deb.nodesource.com/setup_8.x
+    dest: /var/node_setup.sh
+    mode: 0777
+
+- name: Exec script
+  shell: /var/node_setup.sh
+
+- name: Install NodeJS
+  apt: name=nodejs update_cache=yes
+
+- name: Add key
+  shell: curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+
+- name: Add repo
+  shell: echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
+- name: Install Yarn
+  apt: name=yarn update_cache=yes
