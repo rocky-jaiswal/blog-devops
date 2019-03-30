@@ -3,7 +3,7 @@ services:
   my_blogs:
     networks:
     - appnet
-    image: "registry.gitlab.com/rocky-jaiswal/my_blogs:${MY_BLOGS_ID}"
+    image: "registry.gitlab.com/rocky-jaiswal/my_blogs:${MY_BLOGS_SHA}"
     ports:
       - "8080:80"
 networks:
