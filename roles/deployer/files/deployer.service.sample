@@ -1,0 +1,12 @@
+[Unit]
+Description=Deployer Service
+
+[Service]
+Type=simple
+User=rockyj
+Environment=DEPLOYER_USER=deployer
+Environment=DEPLOYER_PASSWORD=deployer
+ExecStart=/opt/deployer/deployer
+
+[Install]
+WantedBy=multi-user.target

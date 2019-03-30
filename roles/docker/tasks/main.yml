@@ -8,14 +8,19 @@
 
 - name: Add repo
   apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
     state: present
 
 - name: Install Docker
   apt: name=docker-ce update_cache=yes
 
-- name: Add users to docker group
-  group:
+- name: Install docker-compose
+  shell: sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+- name: Make it executable
+  shell: sudo chmod +x /usr/local/bin/docker-compose
+
+- group:
     name: docker
     state: present
 

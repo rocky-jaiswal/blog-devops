@@ -5,6 +5,7 @@
   become_method: sudo
   vars:
     ssh_port: 22
+    domain_name: wortschatz.live
 
   pre_tasks:
     - name: install fail2ban
@@ -25,20 +26,6 @@
     - name: install git
       apt: name=git update_cache=yes
 
-    - name: create a user for app
-      user: name=app shell=/bin/bash home=/home/app groups=www-data append=yes
-
-  roles:
-    - docker
-    - nginx
-    - nodejs
-    - blog-deploy
-
-  post_tasks:
-    - name: create directory
-      shell: mkdir -p /home/app/my_blogs/build
-      become_user: app
-
     - name: add certbot repo
       apt_repository:
         repo: 'ppa:certbot/certbot'
@@ -46,3 +33,19 @@
 
     - name: install nginx certbot
       apt: name=python-certbot-nginx update_cache=yes
+
+  roles:
+    - unattended
+    - deployer
+    - docker
+    - dcompose
+    - nginx
+
+  post_tasks:
+    - file:
+        path: /opt/db/data
+        state: directory
+        mode: 0755
+        owner: rockyj
+
+

@@ -13,10 +13,10 @@
     src: "{{ role_path }}/files/nginx.conf"
     dest: /etc/nginx/
 
-- name: Copy blog config
-  copy:
-    src: "{{ role_path }}/files/rockyj.conf"
-    dest: /etc/nginx/sites-enabled/
+- name: Copy app config
+  template:
+    src: app.conf.j2
+    dest: /etc/nginx/sites-enabled/app.conf
 
 - name: remove default
   file:

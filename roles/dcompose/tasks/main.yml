@@ -1,0 +1,49 @@
+---
+
+- file:
+    path: /home/rockyj/app
+    state: directory
+    mode: 0755
+    owner: rockyj
+
+- file:
+    path: /opt/deployer
+    state: directory
+    mode: 0755
+    owner: rockyj
+
+- name: Copy main config
+  copy:
+    src: "{{ role_path }}/files/docker-compose.yml"
+    dest: /home/rockyj/app
+
+- name: Copy env config
+  copy:
+    src: "{{ role_path }}/files/.env"
+    dest: /home/rockyj/app/.env
+
+- name: Copy dockercreds config
+  copy:
+    src: "{{ role_path }}/files/.dockercreds"
+    dest: /home/rockyj/app/.dockercreds
+
+- file:
+    path: /home/rockyj/app/docker-compose.yml
+    mode: 0700
+    owner: rockyj
+
+- file:
+    path: /home/rockyj/app/.env
+    mode: 0700
+    owner: rockyj
+
+- file:
+    path: /home/rockyj/app/.dockercreds
+    mode: 0700
+    owner: rockyj
+
+- name: Copy restart script
+  copy:
+    src: "{{ role_path }}/files/restart-service.sh"
+    dest: /opt/deployer
+    mode: 0555

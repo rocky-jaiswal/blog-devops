@@ -1,0 +1,31 @@
+---
+
+- name: Create directory
+  file:
+    path: /opt/deployer
+    state: directory
+    mode: 0755
+    owner: rockyj
+
+- name: Copy deployer file
+  copy:
+    src: "{{ role_path }}/files/deployer"
+    dest: /opt/deployer/
+    mode: 0555
+
+- name: Copy service file
+  copy:
+    src: "{{ role_path }}/files/deployer.service"
+    dest: /etc/systemd/system/deployer.service
+    mode: 0555
+  become: yes
+
+- name: Enable service deployer, and not touch the running state
+  service:
+    name: deployer
+    enabled: yes
+
+- name: Restart service deployer, in all cases
+  service:
+    name: deployer
+    state: restarted

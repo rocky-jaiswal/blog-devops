@@ -1,7 +1,0 @@
----
-
-- name: Copy deploy scripts
-  copy:
-    src: "{{ role_path }}/files/"
-    dest: /home/app/
-  become_user: app
