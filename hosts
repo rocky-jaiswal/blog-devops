@@ -1,1 +1,1 @@
-app-server ansible_ssh_host=104.248.42.40 ansible_ssh_port=22 ansible_python_interpreter=/usr/bin/python3
+app-server ansible_ssh_host=46.101.249.52 ansible_ssh_port=22 ansible_python_interpreter=/usr/bin/python3

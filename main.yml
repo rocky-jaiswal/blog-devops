@@ -5,7 +5,7 @@
   become_method: sudo
   vars:
     ssh_port: 22
-    domain_name: wortschatz.live
+    domain_name: rockyj.in
 
   pre_tasks:
     - name: remove root ssh
