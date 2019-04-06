@@ -5,9 +5,14 @@
   become_method: sudo
   vars:
     ssh_port: 22
-    domain_name: rockyj.in
+    domain_name: wortschatz.live
 
   pre_tasks:
+    - name: remove root ssh
+      file:
+        path: /root/.ssh/authorized_keys
+        state: absent
+
     - name: install fail2ban
       apt: name=fail2ban update_cache=yes
 
@@ -25,14 +30,6 @@
 
     - name: install git
       apt: name=git update_cache=yes
-
-    - name: add certbot repo
-      apt_repository:
-        repo: 'ppa:certbot/certbot'
-        update_cache: yes
-
-    - name: install nginx certbot
-      apt: name=python-certbot-nginx update_cache=yes
 
   roles:
     - unattended

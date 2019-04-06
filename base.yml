@@ -1,0 +1,49 @@
+---
+- name: Setup the server
+  hosts: app-server
+  become: yes
+  become_method: sudo
+  vars:
+    ssh_port: 22
+    domain_name: wortschatz.live
+
+  pre_tasks:
+    - name: update
+      apt:
+        upgrade: yes
+        update_cache: yes
+
+    - name: Add the main user
+      user:
+        name: rockyj
+        shell: /bin/bash
+        groups: sudo
+        append: yes
+        create_home: yes
+
+    - name: create ssh dir
+      file:
+        path: /home/rockyj/.ssh
+        state: directory
+        mode: 0700
+        owner: rockyj
+
+    - name: Set authorized key for user
+      authorized_key:
+        user: rockyj
+        state: present
+        key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+
+    - name: Install nginx
+      apt: name=nginx update_cache=yes
+
+    - name: add certbot repo
+      apt_repository:
+        repo: 'ppa:certbot/certbot'
+        update_cache: yes
+
+    - name: install nginx certbot
+      apt: name=python-certbot-nginx update_cache=yes
+
+  roles:
+    - nginx-basic

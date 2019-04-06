@@ -4,20 +4,17 @@ Ansible setup for https://rockyj.in
 
 Uses setup described in [blog](https://rockyj.in/2018/10/03/simple-ci.html)
 
-## Basic setup
+## New project setup
 
-- Create droplet from DO (for example)
-- `adduser rockyj`
-- `usermod -aG sudo rockyj`
-- `mkdir -p /home/rockyj/.ssh`
-- `cp /root/.ssh/authorized_keys /home/rockyj/.ssh/`
-- `cd /home/rockyj/`
-- `chown -R rockyj:rockyj .ssh/`
-- `chmod -R 0700 .ssh/`
-- `chmod ugo-x .ssh/authorized_keys`
-- Later `rm -f /root/.ssh/authorized_keys`
-
-## Domain setup
-
-- Buy domain from name.com (for example)
-- Update `domain_name` in `main.yml`
+- Buy server from DO and note IP
+- Buy domain from name.com (for example), change "A Record" to IP
+- Update `domain_name` in `base.yml` and `main.yml`
+- Start with user root in `ansible.cfg`
+- Run `setup_server_base.sh`
+- SSH into server and change password `passwd rockyj`
+- Run `openssl dhparam -out /etc/ssl/certs/dhparam.pem 4096`
+- Run `certbot --nginx`
+- The https://[domain]/index.nginx-debian.html should work on HTTPS now
+- Change to "rockyj" in `ansible.cfg`
+- Run `setup_server_main.sh`
+- SSH into server `sudo reboot`

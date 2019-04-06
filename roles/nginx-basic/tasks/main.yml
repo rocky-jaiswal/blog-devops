@@ -1,0 +1,27 @@
+---
+
+- name: Install nginx
+  apt: name=nginx update_cache=yes
+
+- name: remove default conf
+  file:
+    path: /etc/nginx/nginx.conf
+    state: absent
+
+- name: Copy main config
+  copy:
+    src: "{{ role_path }}/files/nginx.conf"
+    dest: /etc/nginx/
+
+- name: Copy app config
+  template:
+    src: app.conf.j2
+    dest: /etc/nginx/sites-enabled/app.conf
+
+- name: remove default
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: restart nginx
+  systemd: name=nginx state=restarted

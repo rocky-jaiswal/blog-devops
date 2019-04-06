@@ -42,6 +42,12 @@
     mode: 0700
     owner: rockyj
 
+- name: Copy token script
+  copy:
+    src: "{{ role_path }}/files/create-token.sh"
+    dest: /opt/deployer
+    mode: 0555
+
 - name: Copy restart script
   copy:
     src: "{{ role_path }}/files/restart-service.sh"
