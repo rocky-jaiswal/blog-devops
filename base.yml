@@ -34,6 +34,9 @@
         state: present
         key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
 
+    - name: create dhparam key
+      command: openssl dhparam -dsaparam -out /etc/ssl/certs/dhparam.pem 4096
+
     - name: Install nginx
       apt: name=nginx update_cache=yes
 
